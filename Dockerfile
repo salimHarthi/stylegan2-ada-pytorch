@@ -12,11 +12,19 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN pip install imageio-ffmpeg==0.4.3 pyspng==0.1.0
+COPY requirements.txt ./requirements.txt
+run pip install -r requirements.txt
+ADD app.py /workspace/app.py
+EXPOSE 8501
+ADD network-snapshot-000060.pkl /workspace/network-snapshot-000060.pkl
 
 WORKDIR /workspace
+ENTRYPOINT ["streamlit", "run"]
+
+CMD ["app.py"]
 
 # Unset TORCH_CUDA_ARCH_LIST and exec.  This makes pytorch run-time
 # extension builds significantly faster as we only compile for the
 # currently active GPU configuration.
-RUN (printf '#!/bin/bash\nunset TORCH_CUDA_ARCH_LIST\nexec \"$@\"\n' >> /entry.sh) && chmod a+x /entry.sh
-ENTRYPOINT ["/entry.sh"]
+# RUN (printf '#!/bin/bash\nunset TORCH_CUDA_ARCH_LIST\nexec \"$@\"\n' >> /entry.sh) && chmod a+x /entry.sh
+# ENTRYPOINT ["/entry.sh"]

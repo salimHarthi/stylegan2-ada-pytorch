@@ -6,7 +6,7 @@
 # distribution of this software and related documentation without an express
 # license agreement from NVIDIA CORPORATION is strictly prohibited.
 
-import click
+# import click
 import pickle
 import re
 import copy
@@ -287,10 +287,10 @@ def convert_tf_discriminator(tf_D):
 
 #----------------------------------------------------------------------------
 
-@click.command()
-@click.option('--source', help='Input pickle', required=True, metavar='PATH')
-@click.option('--dest', help='Output pickle', required=True, metavar='PATH')
-@click.option('--force-fp16', help='Force the networks to use FP16', type=bool, default=False, metavar='BOOL', show_default=True)
+# @click.command()
+# @click.option('--source', help='Input pickle', required=True, metavar='PATH')
+# @click.option('--dest', help='Output pickle', required=True, metavar='PATH')
+# @click.option('--force-fp16', help='Force the networks to use FP16', type=bool, default=False, metavar='BOOL', show_default=True)
 def convert_network_pickle(source, dest, force_fp16):
     """Convert legacy network pickle into the native PyTorch format.
 
