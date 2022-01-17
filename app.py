@@ -4,6 +4,7 @@ import PIL.Image
 import torch
 import legacy
 import random 
+import dnnlib
 import streamlit as st
 st.header("Anime Face Generator")
 seed = st.text_input('Enter a name', '')
@@ -44,7 +45,9 @@ if submit:
                 return PIL.Image.fromarray(img[0].cpu().numpy(), 'RGB')
 
             device = torch.device('cpu')
-            with open('network-snapshot-000060.pkl',"rb") as f:
+            URL = "https://drive.google.com/uc?id=10Fv4CrCCgietdhI8UqE-Ux0Q4zDL-mBN&export=download"
+            # with open('network-snapshot-000060.pkl',"rb") as f:
+            with dnnlib.util.open_url(URL) as f:
                 G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
 
             import functools
