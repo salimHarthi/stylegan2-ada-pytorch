@@ -57,7 +57,10 @@ if submit:
             img = generate_image(device, G, z)
             img.save("geeks.png")
             # display_image(img)
+            st.image(img, caption='')
+
             with open("geeks.png", "rb") as file:
+
                 btn = st.download_button(
                         label="Download image",
                         data=file,
