@@ -6,10 +6,21 @@ import legacy
 import random 
 import dnnlib
 import streamlit as st
+import gdown
+from os.path import exists
+
+# from downloadfils import download_file_from_google_drive
 st.header("Anime Face Generator")
 seed = st.text_input('Enter a name', '')
 submit = st.button('Generate')
 
+def save_response_content(response, destination):
+    CHUNK_SIZE = 32768
+
+    with open(destination, "wb") as f:
+        for chunk in response.iter_content(CHUNK_SIZE):
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
 
 if submit:
     if len(seed)>0 :
@@ -46,8 +57,13 @@ if submit:
 
             device = torch.device('cpu')
             URL = "https://drive.google.com/uc?id=10Fv4CrCCgietdhI8UqE-Ux0Q4zDL-mBN&export=download"
-            # with open('network-snapshot-000060.pkl',"rb") as f:
-            with dnnlib.util.open_url(URL) as f:
+            output = 'model.pkl'
+            file_exists = exists(output)
+            print(file_exists)
+            if not file_exists:
+                gdown.download(URL, output, quiet=False) 
+            with open('model.pkl',"rb") as f:
+            # with dnnlib.util.open_url(URL) as f:
                 G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
 
             import functools
