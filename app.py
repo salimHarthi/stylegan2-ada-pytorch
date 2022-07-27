@@ -6,6 +6,8 @@ import legacy
 import random 
 import dnnlib
 import streamlit as st
+import gdown
+from os.path import exists
 st.header("Anime Face Generator")
 seed = st.text_input('Enter a name', '')
 submit = st.button('Generate')
@@ -46,8 +48,12 @@ if submit:
 
             device = torch.device('cpu')
             URL = "https://drive.google.com/uc?id=10Fv4CrCCgietdhI8UqE-Ux0Q4zDL-mBN&export=download"
-            # with open('network-snapshot-000060.pkl',"rb") as f:
-            with dnnlib.util.open_url(URL) as f:
+            output = 'model.pkl'
+            file_exists = exists('model.pkl')
+            if not file_exists:
+                gdown.download(URL, output, quiet=False) 
+            with open('model.pkl',"rb") as f:
+            # with dnnlib.util.open_url(URL) as f:
                 G = legacy.load_network_pkl(f)['G_ema'].to(device) # type: ignore
 
             import functools
